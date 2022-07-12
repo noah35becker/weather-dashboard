@@ -29,7 +29,7 @@ label{
 
     #us-label{
         color: var(--us-color);
-        text-decoration: underline 2px; /* initial state only--see script.js for toggle alteration */
+        text-decoration: underline 2px; /* initial state only; see script.js for toggle alteration */
     }
 
     #intl-label{

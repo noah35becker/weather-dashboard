@@ -94,12 +94,13 @@ function cityOptions(searchTerm){
                         filteredData.forEach(option => {
                             var btnText = [option.name];
                             if (option.state){
-                                if ($('#us-intl-toggler').is(':checked')) //int'l
+                                if (US())
+                                    btnText.push(US_STATES.find(state => state.full === option.state).short);    
+                                else //int'l
                                     btnText.push(option.state);
-                                else //US
-                                    btnText.push(US_STATES.find(state => state.full === option.state).short);
+                                    
                             }
-                            if ($('#us-intl-toggler').is(':checked')) //add country code for int'l only
+                            if (!US()) //add country code for int'l only
                                 btnText.push(option.country);
                             
                             $('#city-options-btns-wrapper').append($('<button>')
@@ -144,25 +145,36 @@ function cityOptions(searchTerm){
 };
 
 
-// Add "", US" to the search term if necessary
-function addUSCountryCode(searchTerm){
+// Add country code to the search term if necessary
+function addCountryCode(searchTerm){
     var searchWords = searchTerm.toLowerCase().split(/[,\s]+/); //splits based on this RegEx (w/ either commas or spaces as delimiters
-    var removeDuplicateStateCode = false;
     var output = '';
     
-    var stateCodes = '';
-    US_STATES.forEach(state => {
-        stateCodes += state.short.toLowerCase() + ' ';
-    });
+    if (US()){
+        var removeDuplicateStateCode = false;
 
-    searchWords.forEach(elem => {
-        if(stateCodes.includes(elem)){
-            output += ', ' + elem + ', us';
-            removeDuplicateStateCode = true;
-        }
-        else if (!(elem === 'us' && removeDuplicateStateCode))
-            output += ' ' + elem;
-    });
+        var stateCodes = '';
+        US_STATES.forEach(state => {
+            stateCodes += state.short.toLowerCase() + ' ';
+        });
+
+        searchWords.forEach(elem => {
+            if(stateCodes.includes(elem)){
+                output += ', ' + elem + ', us';
+                removeDuplicateStateCode = true;
+            }
+            else if (!(elem === 'us' && removeDuplicateStateCode))
+                output += ' ' + elem;
+        });
+    }
+    else{ //int'l
+        searchWords.forEach(elem => {
+            if (elem.length === 2)
+                output += ', ' + elem;
+            else
+                output += ' ' + elem;
+        });
+    }
 
     return output.trim();
 }
@@ -170,14 +182,14 @@ function addUSCountryCode(searchTerm){
 
 // Filter returned city options based on US vs. Int'l
 function filterOptionsUSIntl(options){
-    if ($('#us-intl-toggler').is(':checked')){ //int'l
-        for (i = 0; i < options.length; i++)
-            if (options[i].country === 'US')
-                options.splice(i--, 1);
-    }
-    else{ //US
+    if (US()){
         for (i = 0; i < options.length; i++)
             if (!(options[i].country === 'US'))
+                options.splice(i--, 1);
+    }
+    else{ //int'l
+        for (i = 0; i < options.length; i++)
+            if (options[i].country === 'US')
                 options.splice(i--, 1);
     }
             
@@ -185,15 +197,22 @@ function filterOptionsUSIntl(options){
 }
 
 
-// toggle underline of "US" vs "Int'l"
+function US(){
+    return !($('#us-intl-toggler').is(':checked'));
+}
+
+
+// toggle "US" vs "Int'l"
 $('#us-intl-toggler').change(function(){
-    if ($(this).is(':checked')){
-        $('#us-label').css('text-decoration', 'none');
-        $('#intl-label').css('text-decoration', 'underline 2px');
-    }
-    else{
+    if (US()){ 
         $('#us-label').css('text-decoration', 'underline 2px');
         $('#intl-label').css('text-decoration', 'none');
+        $('#city-input').attr('placeholder', 'City (ST)')
+    }
+    else{ //int'l
+        $('#us-label').css('text-decoration', 'none');
+        $('#intl-label').css('text-decoration', 'underline 2px');
+        $('#city-input').attr('placeholder', 'City (Country Code)')
     }
 });
 
@@ -203,9 +222,7 @@ $('#search-form').submit(function(event){
     event.preventDefault();
 
     var searchTerm = $('#city-input').val().trim();
-
-    if (!($('#us-intl-toggler').is(':checked'))) //US
-        searchTerm = addUSCountryCode(searchTerm);
+    searchTerm = addCountryCode(searchTerm);
 
     cityOptions(searchTerm);
 });
