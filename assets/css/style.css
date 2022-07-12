@@ -1,0 +1,13 @@
+
+*{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+}
+
+.display-4{
+    font-weight: normal;
+}
+
+.container{ /* Just for testing purposes*/
+    border: 2px solid black;
+}
