@@ -1,6 +1,8 @@
 
 //GLOBAL VARIABLES
 
+const DateTime = luxon.DateTime;
+
 const API_KEY = '0c3d388a798cab0ea9f81255aec739e8';
 
 class State{
@@ -120,6 +122,8 @@ function formatCountryCode(searchTerm){
 // Handle if multiple possible cities match the search term
 function cityOptions(searchTerm){
     $('#city-options-wrapper').empty().removeClass('d-none');
+    $('#weather-now-wrapper').addClass('d-none');
+    $('#five-day-forecast-wrapper').addClass('d-none'); 
     
     // Geocoding API
     fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
@@ -152,7 +156,7 @@ function cityOptions(searchTerm){
                             .addClass('text-center')
                             .text("If none of these options fits, try making your search more specific"));
 
-                        $('#city-options-wrapper').on('click', '.city-options-btn', function(){
+                        $('#city-options-btns-wrapper').on('click', '.city-options-btn', function(){
                             getWeather($(this).attr('lat'), $(this).attr('lon'), $(this).text())
                         });
                     }
@@ -212,25 +216,61 @@ function getCityText(dataEl){
 }
 
 
-
-// Get and display weather data for given city
-function getWeather(lat, lon, text){
-    console.log('lat: ' + lat, 'lon: ' + lon, 'text: ' + text);
-
+// Get and display weather data for the given city
+function getWeather(lat, lon, cityText){
     $('#city-options-wrapper').addClass('d-none');
+    $('#weather-now-wrapper').empty().removeClass('d-none');
+    $('#five-day-forecast-wrapper').empty().removeClass('d-none');
 
     //Weather API
-    fetch('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=minutely,hourly,alerts&appID=' + API_KEY)
+    fetch('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
                     console.log(data);
+                    $('#weather-now-wrapper').append(
+                        '<h4 id="weather-now-header" class="col-12 text-center">' + cityText
+                        + ' <span id="weather-now-date" class="date">(' + DateTime.fromSeconds(data.current.dt).toFormat('MMMM d, y') + ')</span>'
+                        + '<img\
+                            id="weather-now-img"\
+                            style="display: inline-block; height: 40px"\
+                            src="http://openweathermap.org/img/wn/' + data.current.weather[0].icon + '@2x.png"/>'
+                        + '</h4>'
+                    );
+
+                    $('#weather-now-wrapper').append(
+                        '<div id="weather-now-stats" class="flex-col">'
+                            + '<p>Temp: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>'
+                            + '<p>Wind: ' + Math.round(data.current.wind_speed) + ' MPH</p>'
+                            + '<p>Humidity: ' + Math.round(data.current.humidity) + '%</p>'
+                            + '<p>UV Index: <span class="uv-index ' + getUVIndexCat(data.current.uvi) + '">' + Math.round(data.current.uvi) + '</span></p>'
+                        + '</div>'
+                    );
+
+                    //5-DAY FORECAST
+
+                    //ADD TO SEARCH HISTORY
                 })
             } else
                 throw '';
         }).catch(error => {
             $('#weather-now-wrapper').append(SYSTEM_ERROR_EL);
         });
+}
+
+
+//Get UV Index categorization
+function getUVIndexCat(uvIndex){
+    uvIndex = Math.round(uvIndex);
+    
+    if (uvIndex <= 2)
+        return 'uv-low';
+    else if (uvIndex <= 5)
+        return 'uv-moderate';
+    else if (uvIndex <= 7)
+        return 'uv-high';
+    else
+        return 'uv-very-high';
 }
 
 
