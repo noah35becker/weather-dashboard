@@ -24,20 +24,21 @@
 
     <main class="container row min-vw-100">
         <div class="search-wrapper col-4">
-
-            <div id="us-intl-toggle-wrapper" class="d-flex justify-content-center align-items-center">
-                <label id='us-label' class='pr-1' for="us-intl-toggler">US</label>
-                <label class="switch">
-                    <input type="checkbox" id="us-intl-toggler">
-                    <span class="slider round"></span>
-                </label>
-                <label id="intl-label" class='pl-1' for="us-intl-toggler">Int'l</label>
-            </div>
-
             <form id="search-form" class="d-flex flex-column">
                 <label class="text-center" for="city-input">Search for a city</label>
+
+                <div id="us-intl-toggle-wrapper" class="d-flex justify-content-center align-items-center">
+                    <label id='us-label' class='pr-1' for="us-intl-toggler">US</label>
+                    <label class="switch">
+                        <input type="checkbox" id="us-intl-toggler">
+                        <span class="slider round"></span>
+                    </label>
+                    <label id="intl-label" class='pl-1' for="us-intl-toggler">Int'l</label>
+                </div>
+
                 <input type="text" name="city" id="city-input" autofocus
                     placeholder="City (ST)"/> <!-- initial state only; see script.js for toggle alteration -->
+                    
                 <button type="submit" form="search-form">Search</button>
             </form>
 
