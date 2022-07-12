@@ -90,8 +90,6 @@ function formatCountryCode(searchTerm){
     var output = '';
     
     if (US()){
-        var removeDupStateCode = false;
-
         var stateCodes = '';
         US_STATES.forEach(state => {
             stateCodes += state.short.toLowerCase() + ' ';
@@ -99,12 +97,13 @@ function formatCountryCode(searchTerm){
 
         searchWords.forEach(elem => {
             if(stateCodes.includes(elem)){
-                output += ', ' + elem + ', us';
-                removeDupStateCode = true;
+                output += ', ' + elem;
             }
-            else if (!(elem === 'us' && removeDupStateCode))
+            else if (!(elem === 'us'))
                 output += ' ' + elem;
         });
+
+        output += ', us';
     }
     else{ //int'l
         searchWords.forEach(elem => {
@@ -130,7 +129,8 @@ function cityOptions(searchTerm){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    var filteredData = filterOptionsUSIntl(data);
+                    
+                    var filteredData = filterOptionsUSIntl(data, searchTerm.includes(', us'));
 
                     // If the search term yields multiple city options
                     if (filteredData.length > 1){
@@ -154,7 +154,7 @@ function cityOptions(searchTerm){
                         $('#city-options-wrapper').append($('<h4>')
                             .attr('id', 'city-options-footer')
                             .addClass('text-center')
-                            .text("If none of these options fits, try making your search more specific"));
+                            .text("If none of these options is what you're looking for, try making your search more specific"));
 
                         $('#city-options-btns-wrapper').on('click', '.city-options-btn', function(){
                             getWeather($(this).attr('lat'), $(this).attr('lon'), $(this).text())
@@ -182,13 +182,13 @@ function cityOptions(searchTerm){
 
 
 // Filter returned city options based on US vs. Int'l
-function filterOptionsUSIntl(options){
+function filterOptionsUSIntl(options, usCountryCodeSupplied){
     if (US()){
         for (i = 0; i < options.length; i++)
             if (!(options[i].country === 'US'))
                 options.splice(i--, 1);
     }
-    else{ //int'l
+    else if (!usCountryCodeSupplied){ //int'l -- purge US results, unless the 'US' country code was actually supplied
         for (i = 0; i < options.length; i++)
             if (options[i].country === 'US')
                 options.splice(i--, 1);
