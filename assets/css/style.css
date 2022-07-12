@@ -1,13 +1,101 @@
+:root{
+    --us-color: #2196F3;
+    --intl-color: rgb(134, 54, 255);
+}
+
 
 *{
     font-family: 'Montserrat', sans-serif;
     font-weight: normal;
 }
 
+label{
+    margin: 0;
+}
+
 .display-4{
     font-weight: normal;
 }
 
-.container{ /* Just for testing purposes*/
-    border: 2px solid black;
+
+
+/* US/INT'L TOGGLE SWITCH */
+    #us-intl-toggle-wrapper label{
+        font-weight: bold;
+        text-underline-offset: 2px;
+        transition: all .4s;
+        user-select: none;
+    }
+
+    #us-label{
+        color: var(--us-color);
+        text-decoration: underline 2px; /* initial state only--see script.js for toggle alteration */
+    }
+
+    #intl-label{
+        color: var(--intl-color);
+    }
+
+    .switch{
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+    }
+    
+    /* Hide default HTML checkbox */
+    .switch input#us-intl-toggler{
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    /* The slider */
+    .slider{
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--us-color);
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    
+    .slider:before{
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 3.5px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+
+    input#us-intl-toggler:checked + .slider{
+        background-color: var(--intl-color);
+    }
+    
+    input#us-intl-toggler:checked + .slider:before{
+        -webkit-transform: translateX(24px);
+        -ms-transform: translateX(24px);
+        transform: translateX(24px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round{
+        border-radius: 34px;
+    }
+    
+    .slider.round:before{
+        border-radius: 50%;
+    }
+
+
+.city-options-btn{
+    white-space: nowrap;
 }
