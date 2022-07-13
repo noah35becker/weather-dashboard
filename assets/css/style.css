@@ -206,7 +206,7 @@
     background-color: lightyellow; /* fallback */
 }
 .card:nth-child(1){
-    background-image: linear-gradient(60deg, var(--forecasts-bkgrd-color-grad));
+    background-image: linear-gradient(50deg, var(--forecasts-bkgrd-color-grad));
 }
 .card:nth-child(2){
     background-image: linear-gradient(40deg, var(--forecasts-bkgrd-color-grad));
@@ -218,7 +218,7 @@
     background-image: linear-gradient(-40deg, var(--forecasts-bkgrd-color-grad));
 }
 .card:nth-child(5){
-    background-image: linear-gradient(-60deg, var(--forecasts-bkgrd-color-grad));
+    background-image: linear-gradient(-50deg, var(--forecasts-bkgrd-color-grad));
 }
 
 .card-title{
