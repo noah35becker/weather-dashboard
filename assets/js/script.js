@@ -77,6 +77,9 @@ const SYSTEM_ERROR_EL = $('<h4>')
 
 const ICON_STYLE = 'display: inline-block; height: 40px';
 
+var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+const MAX_NUM_SEARCH_HISTORY = 5;
+
 
 //FUNCTIONS
 
@@ -229,7 +232,6 @@ function getWeather(lat, lon, cityText){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    console.log(data);
                     $('#weather-now-wrapper').append(
                         '<h4 id="weather-now-header" class="col-12 text-center">' + cityText
                         + ' <span id="weather-now-date" class="date">(' + DateTime.fromSeconds(data.current.dt).toFormat('ccc, MMM d, y, t') + ')</span>'
@@ -261,15 +263,15 @@ function getWeather(lat, lon, cityText){
                                     + '<div class="card-title">' + DateTime.fromSeconds(data.daily[i].dt).toFormat('ccc, MMM d') + '</div>'
                                     + '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '">'
                                     +'</div>'
-                                    + '<p>Temp: ' + Math.round(data.daily[i].temp.day) + '°F</p>'
-                                    + '<p>Wind: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>'
-                                    + '<p>Humidity: ' + Math.round(data.daily[i].humidity) + '%</p>'
+                                    + '<p class="card-text">Temp: ' + Math.round(data.daily[i].temp.day) + '°F</p>'
+                                    + '<p class="card-text">Wind: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>'
+                                    + '<p class="card-text">Humidity: ' + Math.round(data.daily[i].humidity) + '%</p>'
                                 + '</div>'
                             + '</div>'
                         );
                     }
 
-                    //ADD TO SEARCH HISTORY
+                    saveSearchHistory(lat, lon, cityText);
                 })
             } else
                 throw '';
@@ -300,10 +302,50 @@ function getUVIndexCat(uvIndex){
 }
 
 
+//Save search history to localStorage
+function saveSearchHistory(newItemLat, newItemLon, newItemText){
+    var trulyNewItem = true;
+    
+    for (i = 0; i < searchHistory.length; i++)
+        if (newItemText === searchHistory[i].text){
+            trulyNewItem = false;
+            searchHistory.unshift(searchHistory.splice(i, 1)[0]);
+            localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+            break;
+        }
+    
+    if (trulyNewItem){
+        searchHistory.unshift({
+            lat: newItemLat,
+            lon: newItemLon,
+            text: newItemText
+        });
+        
+        if (searchHistory.length > MAX_NUM_SEARCH_HISTORY)
+            searchHistory.pop();
+
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    }
+
+    loadSearchHistory();
+}
+
+
+// Load search history on page
+function loadSearchHistory(){
+    $('#search-history-wrapper').empty();
+    searchHistory.forEach(item => 
+        $('#search-history-wrapper').append(
+            '<button class="search-history-btn" lat="' + item.lat + '" lon="' + item.lon + '">' + item.text + '</button>'
+        )
+    );
+}
+
+
 
 //LISTENERS
 
-// toggle "US" vs "Int'l"
+// Toggle "US" vs "Int'l"
 $('#us-intl-toggler').change(function(){
     if (US()){ 
         $('#us-label').css('text-decoration', 'underline 2px');
@@ -331,6 +373,12 @@ $('#search-form').submit(function(event){
 });
 
 
+// Search history buttons
+$('#search-history-wrapper').on('click', '.search-history-btn', function(){
+    getWeather($(this).attr('lat'), $(this).attr('lon'), $(this).text())
+});
 
 
 
+//INITIALIZE PAGE
+loadSearchHistory();
