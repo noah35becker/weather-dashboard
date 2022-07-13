@@ -262,7 +262,7 @@ function getWeather(lat, lon, cityText){
                         $('#forecasts-wrapper').append(
                             '<div class="card px-0 mx-2 mb-3 border border-light" style="width: 150px">' +
                                 '<div class="card-body text-center px-2 py-3">' +
-                                    '<div class="card-title mb-1">' + DateTime.fromSeconds(data.daily[i].dt).toFormat('ccc, MMM d') + '</div>' +
+                                    '<div class="card-title mb-1">' + DateTime.fromSeconds(data.daily[i].dt).setZone(data.timezone).toFormat('ccc, MMM d') + '</div>' +
                                     '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '">' +
                                     '<p class="card-text text-left pl-2"><span class="stat-label">Temp</span>: ' + Math.round(data.daily[i].temp.day) + '°F</p>' +
                                     '<p class="card-text text-left pl-2"><span class="stat-label">Wind</span>: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>' +
