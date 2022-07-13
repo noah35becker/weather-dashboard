@@ -242,7 +242,7 @@ function getWeather(lat, lon, cityText){
                             '<p><span class="stat-label">Temp</span>: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>' +
                             '<p><span class="stat-label">Wind</span>: ' + Math.round(data.current.wind_speed) + ' MPH</p>' +
                             '<p><span class="stat-label">Humidity</span>: ' + Math.round(data.current.humidity) + '%</p>' +
-                            '<p><span class="stat-label">UV Index</span>: <span class="uv-index ' + getUVIndexCat(data.current.uvi) + '">' + Math.round(data.current.uvi) + '</span></p>' +
+                            '<p><span class="stat-label">UV Index</span>: ' + getUVIndexHTML(data.current.uvi) + '</p>' +
                         '</div>'
                     );
 
@@ -286,18 +286,24 @@ function getWeatherIconLink(iconID){
 }
 
 
-//Get UV Index categorization
-function getUVIndexCat(uvIndex){
+//Get UV Index element (w/ appropriate categorization)
+function getUVIndexHTML(uvIndex){
     uvIndex = Math.round(uvIndex);
     
+    output = '<span class="uv-index uv-'
+
     if (uvIndex <= 2)
-        return 'uv-low';
+        output += 'low';
     else if (uvIndex <= 5)
-        return 'uv-moderate';
+        output += 'moderate';
     else if (uvIndex <= 7)
-        return 'uv-high';
+        output += 'high';
     else
-        return 'uv-very-high';
+        output += 'very-high';
+
+    output += '">' + uvIndex + '</span>';
+
+    return output;
 }
 
 
