@@ -128,8 +128,8 @@ function formatCountryCode(searchTerm){
 // Handle if multiple possible cities match the search term
 function cityOptions(searchTerm){
     $('#city-options-wrapper').empty().removeClass('d-none');
-    $('#weather-now-wrapper').addClass('d-none');
-    $('#five-day-forecast-wrapper').addClass('d-none'); 
+    $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
+    $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none'); 
     
     // Geocoding API
     fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
@@ -227,8 +227,8 @@ function getCityText(dataEl){
 // Get and display weather data for the given city
 function getWeather(lat, lon, cityText){
     $('#city-options-wrapper').addClass('d-none');
-    $('#weather-now-wrapper').empty().removeClass('border').addClass('d-none');
-    $('#five-day-forecast-wrapper').empty().removeClass('border').addClass('d-none');
+    $('#weather-now-wrapper').empty().removeClass('border d-flex').addClass('d-none');
+    $('#five-day-forecast-wrapper').empty().removeClass('border d-flex').addClass('d-none');
 
     //Weather API
     fetch('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
