@@ -7,6 +7,8 @@
         --uv-moderate-color: rgb(248, 229, 0);
         --uv-high-color: rgb(250, 89, 1);
         --uv-very-high-color: rgb(217, 0, 17);
+        --weather-bkgrd-color-grad: rgb(94, 178, 252), rgb(0, 238, 238);
+        --forecasts-bkgrd-color-grad: rgb(183, 138, 255), rgb(221, 221, 50);
     }
 
 
@@ -160,11 +162,11 @@
 /* WEATHER NOW */
 #weather-now-wrapper{
     background-color: blue; /* fallback */
-    background-image: linear-gradient(45deg, rgb(94, 178, 252), rgb(0, 238, 238)); 
+    background-image: linear-gradient(45deg, var(--weather-bkgrd-color-grad)); 
 }
 #five-day-forecast-wrapper{
     background-color: blue; /* fallback */
-    background-image: linear-gradient(225deg, rgb(94, 178, 252), rgb(0, 238, 238)); 
+    background-image: linear-gradient(225deg, var(--weather-bkgrd-color-grad)); 
 }
 
 #weather-now-date{
@@ -204,19 +206,19 @@
     background-color: lightyellow; /* fallback */
 }
 .card:nth-child(1){
-    background-image: linear-gradient(80deg, rgb(255, 255, 216), rgb(255, 255, 22));
+    background-image: linear-gradient(60deg, var(--forecasts-bkgrd-color-grad));
 }
 .card:nth-child(2){
-    background-image: linear-gradient(40deg, rgb(255, 255, 216), rgb(255, 255, 22));
+    background-image: linear-gradient(40deg, var(--forecasts-bkgrd-color-grad));
 }
 .card:nth-child(3){
-    background-image: linear-gradient(0deg, rgb(255, 255, 216), rgb(255, 255, 22));
+    background-image: linear-gradient(0deg, var(--forecasts-bkgrd-color-grad));
 }
 .card:nth-child(4){
-    background-image: linear-gradient(-40deg, rgb(255, 255, 216), rgb(255, 255, 22));
+    background-image: linear-gradient(-40deg, var(--forecasts-bkgrd-color-grad));
 }
 .card:nth-child(5){
-    background-image: linear-gradient(-80deg, rgb(255, 255, 216), rgb(255, 255, 22));
+    background-image: linear-gradient(-60deg, var(--forecasts-bkgrd-color-grad));
 }
 
 .card-title{
