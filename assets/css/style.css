@@ -9,6 +9,7 @@
         --uv-very-high-color: rgb(217, 0, 17);
         --weather-bkgrd-color-grad: rgb(94, 178, 252), rgb(0, 238, 238);
         --forecasts-bkgrd-color-grad: rgb(255, 138, 237), rgb(221, 221, 50);
+        --transition-time: .4s;
     }
 
 
@@ -55,11 +56,12 @@
         margin-bottom: .7rem;
     }
 
+
     /* US/INT'L TOGGLE SWITCH */
         #us-intl-toggle-wrapper label{
             font-weight: bold;
             text-underline-offset: 2px;
-            transition: all .4s;
+            transition: all var(--transition-time);
             user-select: none;
             padding: 0 8px;
             border-radius: 15px;
@@ -85,6 +87,11 @@
             display: inline-block;
             width: 50px;
             height: 25px;
+            opacity: 1;
+            transition: opacity var(--transition-time);
+        }
+        .switch:hover{
+            opacity: .8;
         }
         
         /* Hide default checkbox */
@@ -103,8 +110,8 @@
             right: 0;
             bottom: 0;
             background-color: var(--us-color);
-            -webkit-transition: .4s;
-            transition: .4s;
+            -webkit-transition: var(--transition-time);
+            transition: var(--transition-time);
         }
         
         .slider:before{
@@ -115,8 +122,8 @@
             left: 4px;
             bottom: 3.5px;
             background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
+            -webkit-transition: var(--transition-time);
+            transition: var(--transition-time);
         }
 
         input#us-intl-toggler:checked + .slider{
@@ -138,94 +145,125 @@
         }
 
 
+/* SEARCH HISTORY */
+    .search-history-btn:first-child{
+        margin-top: 1.5rem;
+    }
+
+
 /* CITY OPTIONS */
-#city-options-header{
-    font-size: 1.4rem;
-}
+    #city-options-header{
+        font-size: 1.4rem;
+    }
 
-.city-options-btn{
-    white-space: nowrap;
-}
+    .city-options-btn{
+        white-space: nowrap;
+    }
 
-#city-options-footer{
-    font-size: 1rem;
-    font-style: italic;
-}
+    #city-options-footer{
+        font-size: 1rem;
+        font-style: italic;
+    }
 
-.error-msg{
-    color: rgb(200, 4, 4);
-}
+    .error-msg{
+        color: rgb(200, 4, 4);
+    }
 
 
 
 
 /* WEATHER NOW */
-#weather-now-wrapper{
-    background-color: blue; /* fallback */
-    background-image: linear-gradient(45deg, var(--weather-bkgrd-color-grad)); 
-}
-#five-day-forecast-wrapper{
-    background-color: blue; /* fallback */
-    background-image: linear-gradient(225deg, var(--weather-bkgrd-color-grad)); 
-}
+    #weather-now-wrapper{
+        background-color: blue; /* fallback */
+        background-image: linear-gradient(45deg, var(--weather-bkgrd-color-grad)); 
+    }
+    #five-day-forecast-wrapper{
+        background-color: blue; /* fallback */
+        background-image: linear-gradient(225deg, var(--weather-bkgrd-color-grad)); 
+    }
 
-#weather-now-date{
-    font-style: italic;
-}
+    #weather-now-date{
+        font-style: italic;
+    }
 
-#weather-now-stats-wrapper p{
-    margin-bottom: .6rem;
-}
+    #weather-now-stats-wrapper p{
+        margin-bottom: .6rem;
+    }
 
-.uv-index{
-    padding: 0 15px;
-    border: 1px solid rgba(0, 0, 0, 0);
-    border-radius: 10px;
-    margin-left: 2px;
-}
-.uv-low{
-    background-color: var(--uv-low-color);
-    color: white;
-}
-.uv-moderate{
-    background-color: var(--uv-moderate-color);
-    color: black;
-}
-.uv-high{
-    background-color: var(--uv-high-color);
-    color: white;
-}
-.uv-very-high{
-    background-color: var(--uv-very-high-color);
-    color: white;
-}
+    .uv-index{
+        padding: 0 15px;
+        border: 1px solid rgba(0, 0, 0, 0);
+        border-radius: 10px;
+        margin-left: 2px;
+    }
+    .uv-low{
+        background-color: var(--uv-low-color);
+        color: white;
+    }
+    .uv-moderate{
+        background-color: var(--uv-moderate-color);
+        color: black;
+    }
+    .uv-high{
+        background-color: var(--uv-high-color);
+        color: white;
+    }
+    .uv-very-high{
+        background-color: var(--uv-very-high-color);
+        color: white;
+    }
 
 
 /* 5-DAY FORECAST */
-.card{
-    background-color: lightyellow; /* fallback */
-}
-.card:nth-child(1){
-    background-image: linear-gradient(50deg, var(--forecasts-bkgrd-color-grad));
-}
-.card:nth-child(2){
-    background-image: linear-gradient(40deg, var(--forecasts-bkgrd-color-grad));
-}
-.card:nth-child(3){
-    background-image: linear-gradient(0deg, var(--forecasts-bkgrd-color-grad));
-}
-.card:nth-child(4){
-    background-image: linear-gradient(-40deg, var(--forecasts-bkgrd-color-grad));
-}
-.card:nth-child(5){
-    background-image: linear-gradient(-50deg, var(--forecasts-bkgrd-color-grad));
+    .card{
+        background-color: lightyellow; /* fallback */
+    }
+    .card:nth-child(1){
+        background-image: linear-gradient(50deg, var(--forecasts-bkgrd-color-grad));
+    }
+    .card:nth-child(2){
+        background-image: linear-gradient(40deg, var(--forecasts-bkgrd-color-grad));
+    }
+    .card:nth-child(3){
+        background-image: linear-gradient(0deg, var(--forecasts-bkgrd-color-grad));
+    }
+    .card:nth-child(4){
+        background-image: linear-gradient(-40deg, var(--forecasts-bkgrd-color-grad));
+    }
+    .card:nth-child(5){
+        background-image: linear-gradient(-50deg, var(--forecasts-bkgrd-color-grad));
+    }
+
+    .card-title{
+        font-weight: 500;
+    }
+
+    .card-text{
+        margin-bottom: .6rem;
+    }
+
+
+/* MEDIA QUERIES */
+@media screen and (min-width: 576px) and (max-width: 767px){
+    #city-input{
+        width: 75%!important;
+    }
 }
 
-.card-title{
-    font-weight: 500;
-}
+@media screen and (max-width: 576px) {
+    header h1{
+        font-size: 2.1rem;
+    }
 
-.card-text{
-    margin-bottom: .6rem;
-}
+    #weather-now-header, #five-day-forecast-header{
+        font-size: 1.3rem;
+    }
 
+    #weather-now-date{
+        font-size: 1rem;
+    }
+
+    #weather-now-stats-wrapper p, .card-text{
+        font-size: .9rem;
+    }
+}

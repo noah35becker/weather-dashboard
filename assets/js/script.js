@@ -229,8 +229,8 @@ function getWeather(lat, lon, cityText){
             if (response.ok){
                 response.json().then(data => {
                     $('#weather-now-wrapper').append(
-                        '<h4 id="weather-now-header" class="my-2">' + cityText + '</h4>' +
-                        '<h4 id="weather-now-date" class="mb-0">(' + DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t') + ')</h4>' +
+                        '<h4 id="weather-now-header" class="text-center my-2">' + cityText + '</h4>' +
+                        '<h5 id="weather-now-date" class="px-3 text-center mb-0">(' + DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t') + ')</h5>' +
                         '<img id="weather-now-img" ' +
                             'style="' + ICON_STYLE + '" ' +
                             'src="' + getWeatherIconLink(data.current.weather[0].icon) +
@@ -238,7 +238,7 @@ function getWeather(lat, lon, cityText){
                     );
 
                     $('#weather-now-wrapper').append(
-                        '<div id="weather-now-stats-wrapper" class="flex-column align-items-center">' +
+                        '<div id="weather-now-stats-wrapper" class="px-3 flex-column align-items-center">' +
                             '<p><span class="stat-label">Temp</span>: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>' +
                             '<p><span class="stat-label">Wind</span>: ' + Math.round(data.current.wind_speed) + ' MPH</p>' +
                             '<p><span class="stat-label">Humidity</span>: ' + Math.round(data.current.humidity) + '%</p>' +
