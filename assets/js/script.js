@@ -297,9 +297,11 @@ $('#search-form').submit(function(event){
     event.preventDefault();
 
     var searchTerm = $('#city-input').val().trim();
-    searchTerm = formatCountryCode(searchTerm);
-
-    cityOptions(searchTerm);
+    
+    if(searchTerm){
+        searchTerm = formatCountryCode(searchTerm);
+        cityOptions(searchTerm);
+    }
 });
 
 
