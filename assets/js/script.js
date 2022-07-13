@@ -100,7 +100,10 @@ function formatSearchTerm(searchTerm){
     
     if (US()){
         for (i = 0; i < searchWords.length; i++){
-            if (US_STATES.find(state => state.short.toLowerCase() === searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the state code if needed
+            if ( // add a comma before the state code (or state full name) if needed
+                !searchWords[i >= 1 ? i-1 : 0].includes(',') &&
+                US_STATES.find(state => (state.short.toLowerCase() === searchWords[i] || state.full.toLowerCase() === searchWords[i]))
+            )
                 output += ',';
             output += ' ' + searchWords[i];   
         }
@@ -115,6 +118,7 @@ function formatSearchTerm(searchTerm){
         }
     }
 
+    console.log(output.trim());
     return output.trim();
 }
 
