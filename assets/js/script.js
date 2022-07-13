@@ -130,7 +130,7 @@ function cityOptions(searchTerm){
     $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none'); 
     
     // Geocoding API
-    fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
+    fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
@@ -228,7 +228,7 @@ function getWeather(lat, lon, cityText){
     $('#five-day-forecast-wrapper').empty().removeClass('border d-flex').addClass('d-none');
 
     //Weather API
-    fetch('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
+    fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
@@ -288,7 +288,7 @@ function getWeather(lat, lon, cityText){
 
 //Get weather icon img link
 function getWeatherIconLink(iconID){
-    return 'http://openweathermap.org/img/wn/' + iconID + '@2x.png';
+    return 'https://openweathermap.org/img/wn/' + iconID + '@2x.png';
 }
 
 
