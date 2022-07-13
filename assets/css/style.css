@@ -1,97 +1,229 @@
-:root{
-    --us-color: #2196F3;
-    --intl-color: rgb(134, 54, 255);
+
+/* GLOBAL VARIABLES */
+    :root{
+        --us-color: #2196F3;
+        --intl-color: rgb(134, 54, 255);
+        --uv-low-color: rgb(41, 149, 0);
+        --uv-moderate-color: rgb(248, 229, 0);
+        --uv-high-color: rgb(250, 89, 1);
+        --uv-very-high-color: rgb(217, 0, 17);
+    }
+
+
+/* GENERAL RULES */
+    *{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: normal;
+        box-sizing: border-box;
+    }
+
+    label{
+        margin: 0;
+    }
+
+    body{
+        background-color: lightgreen; /* fallback */
+        background-image: radial-gradient(farthest-corner at 300px 300px, rgb(134, 233, 162), rgb(215, 245, 215));
+    }
+
+    header, footer{
+        flex-grow: 0;
+    }
+    main{
+        flex-grow: 1;
+    }
+
+    .stat-label{
+        font-weight: 500;
+    }
+
+
+/* HEADER */
+    header h1{
+        font-weight: 500;
+    }
+
+
+/* SEARCH FORM */
+    #search-form label[for="city-input"]{
+        font-weight: 500;
+    }
+
+    #city-input{
+        margin-bottom: .7rem;
+    }
+
+    /* US/INT'L TOGGLE SWITCH */
+        #us-intl-toggle-wrapper label{
+            font-weight: bold;
+            text-underline-offset: 2px;
+            transition: all .4s;
+            user-select: none;
+            padding: 0 8px;
+            border-radius: 15px;
+            line-height: 1.4;
+        }
+
+        #us-label{
+            color: var(--us-color);
+            border-style: solid;
+            border-color: var(--us-color); /* init value only--see script.js for toggle alteration */
+            border-width: 2px;
+        }
+
+        #intl-label{
+            color: var(--intl-color);
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0); /* init value only--see script.js for toggle alteration */
+            border-width: 2px;
+        }
+
+        .switch{
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+        
+        /* Hide default checkbox */
+        .switch input#us-intl-toggler{
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        /* The slider */
+        .slider{
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--us-color);
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+        
+        .slider:before{
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 3.5px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input#us-intl-toggler:checked + .slider{
+            background-color: var(--intl-color);
+        }
+        
+        input#us-intl-toggler:checked + .slider:before{
+            -webkit-transform: translateX(24px);
+            -ms-transform: translateX(24px);
+            transform: translateX(24px);
+        }
+
+        .slider.round{
+            border-radius: 34px;
+        }
+        
+        .slider.round:before{
+            border-radius: 50%;
+        }
+
+
+/* CITY OPTIONS */
+#city-options-header{
+    font-size: 1.4rem;
 }
-
-
-*{
-    font-family: 'Montserrat', sans-serif;
-    font-weight: normal;
-}
-
-label{
-    margin: 0;
-}
-
-
-
-/* US/INT'L TOGGLE SWITCH */
-    #us-intl-toggle-wrapper label{
-        font-weight: bold;
-        text-underline-offset: 2px;
-        transition: all .4s;
-        user-select: none;
-    }
-
-    #us-label{
-        color: var(--us-color);
-        text-decoration: underline 2px; /* initial state only; see script.js for toggle alteration */
-    }
-
-    #intl-label{
-        color: var(--intl-color);
-    }
-
-    .switch{
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 25px;
-    }
-    
-    /* Hide default HTML checkbox */
-    .switch input#us-intl-toggler{
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-    
-    /* The slider */
-    .slider{
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: var(--us-color);
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-    
-    .slider:before{
-        position: absolute;
-        content: "";
-        height: 18px;
-        width: 18px;
-        left: 4px;
-        bottom: 3.5px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-
-    input#us-intl-toggler:checked + .slider{
-        background-color: var(--intl-color);
-    }
-    
-    input#us-intl-toggler:checked + .slider:before{
-        -webkit-transform: translateX(24px);
-        -ms-transform: translateX(24px);
-        transform: translateX(24px);
-    }
-    
-    /* Rounded sliders */
-    .slider.round{
-        border-radius: 34px;
-    }
-    
-    .slider.round:before{
-        border-radius: 50%;
-    }
-
 
 .city-options-btn{
     white-space: nowrap;
 }
+
+#city-options-footer{
+    font-size: 1rem;
+    font-style: italic;
+}
+
+.error-msg{
+    color: rgb(200, 4, 4);
+}
+
+
+
+
+/* WEATHER NOW */
+#weather-now-wrapper{
+    background-color: blue; /* fallback */
+    background-image: linear-gradient(45deg, rgb(94, 178, 252), rgb(0, 238, 238)); 
+}
+#five-day-forecast-wrapper{
+    background-color: blue; /* fallback */
+    background-image: linear-gradient(225deg, rgb(94, 178, 252), rgb(0, 238, 238)); 
+}
+
+#weather-now-date{
+    font-style: italic;
+}
+
+#weather-now-stats-wrapper p{
+    margin-bottom: .6rem;
+}
+
+.uv-index{
+    padding: 0 15px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    margin-left: 2px;
+}
+.uv-low{
+    background-color: var(--uv-low-color);
+    color: white;
+}
+.uv-moderate{
+    background-color: var(--uv-moderate-color);
+    color: black;
+}
+.uv-high{
+    background-color: var(--uv-high-color);
+    color: white;
+}
+.uv-very-high{
+    background-color: var(--uv-very-high-color);
+    color: white;
+}
+
+
+/* 5-DAY FORECAST */
+.card{
+    background-color: lightyellow; /* fallback */
+}
+.card:nth-child(1){
+    background-image: linear-gradient(80deg, rgb(255, 255, 216), rgb(255, 255, 22));
+}
+.card:nth-child(2){
+    background-image: linear-gradient(40deg, rgb(255, 255, 216), rgb(255, 255, 22));
+}
+.card:nth-child(3){
+    background-image: linear-gradient(0deg, rgb(255, 255, 216), rgb(255, 255, 22));
+}
+.card:nth-child(4){
+    background-image: linear-gradient(-40deg, rgb(255, 255, 216), rgb(255, 255, 22));
+}
+.card:nth-child(5){
+    background-image: linear-gradient(-80deg, rgb(255, 255, 216), rgb(255, 255, 22));
+}
+
+.card-title{
+    font-weight: 500;
+}
+
+.card-text{
+    margin-bottom: .6rem;
+}
+

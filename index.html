@@ -9,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="./assets/css/style.css"/>
@@ -17,43 +17,47 @@
     <title>Weather Dashboard</title>
 </head>
 
-<body>
+<body class="w-100 min-vh-100 d-flex flex-column justify-content-between align-items-center">
     <header>
-        <h1 class="min-vw-100 text-center text-truncate">Weather Dashboard</h1>
+        <h1 class="mt-3 mb-4">Weather Dashboard</h1>
     </header>
 
-    <main class="container row min-vw-100">
-        <div class="search-wrapper col-4">
-            <form id="search-form" class="d-flex flex-column">
-                <label class="text-center" for="city-input">Search for a city</label>
+    <main class="container-fluid px-4 row justify-content-center">
+        <div class="search-wrapper col-3">
+            <form id="search-form" class="d-flex flex-column align-items-center border-bottom border-secondary">
+                <label for="city-input">Search for a city</label>
 
-                <div id="us-intl-toggle-wrapper" class="d-flex justify-content-center align-items-center">
-                    <label id='us-label' class='pr-1' for="us-intl-toggler">US</label>
+                <div id="us-intl-toggle-wrapper" class="d-flex align-items-center my-2">
+                    <label id='us-label' class='mr-2' for="us-intl-toggler">US</label>
                     <label class="switch">
                         <input type="checkbox" id="us-intl-toggler">
                         <span class="slider round"></span>
                     </label>
-                    <label id="intl-label" class='pl-1' for="us-intl-toggler">Int'l</label>
+                    <label id="intl-label" class='ml-2' for="us-intl-toggler">Int'l</label>
                 </div>
 
-                <input type="text" name="city" id="city-input" autofocus
+                <input type="text" name="city" id="city-input" class="w-100" autofocus
                     placeholder="City (ST)"/> <!-- initial state only; see script.js for toggle alteration -->
 
-                <button type="submit" form="search-form">Search</button>
+                <button type="submit" form="search-form" class="btn btn-success w-50 mb-4 border border-light">Search</button>
             </form>
 
-            <div id='search-history-wrapper' class="text-center d-flex flex-column"></div>
+            <div id='search-history-wrapper' class="d-flex flex-column align-items-center mt-4"></div>
         </div>
         
-        <div class="weather-wrapper col-8">
-            <div id="city-options-wrapper" class="w-100"></div>
+        <div class="weather-wrapper col-9">
+            <div id="city-options-wrapper" class="mt-3"></div>
             
-            <div id="weather-now-wrapper" class="container"></div>
+            <div id="weather-now-wrapper" class="d-none align-items-center border border-primary mb-4"></div>
 
-            <div id="five-day-forecast-wrapper" class="container"></div>
+            <div id="five-day-forecast-wrapper" class="d-none align-items-center border border-primary"></div>
         </div>
 
     </main>
+
+    <footer class="text-center mb-4">
+        <span class="border-right border-dark">Designed and coded by Noah Becker&nbsp;&nbsp;</span>&nbsp;&nbsp;&copy; <span id="this-year"></span></script>
+      </footer>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@2.4.0/build/global/luxon.min.js"></script>

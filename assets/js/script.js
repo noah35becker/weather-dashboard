@@ -71,14 +71,16 @@ const US_STATES = [
     new State('WY', 'Wyoming'),
 ];
 
-const SYSTEM_ERROR_EL = $('<h4>')
-    .addClass('error-msg text-center')
-    .text('System error—please try again');
+const SYSTEM_ERROR_EL = $(
+    '<h4 class="error-msg text-center">' +
+        'System error—please try again' +
+    '</h4>'
+);
 
-const ICON_STYLE = 'display: inline-block; height: 40px';
+const ICON_STYLE = 'display: inline-block; width: 50px';
 
 var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-const MAX_NUM_SEARCH_HISTORY = 5;
+const MAX_NUM_SEARCH_HISTORY = 8;
 
 
 //FUNCTIONS
@@ -139,27 +141,25 @@ function cityOptions(searchTerm){
 
                     // If the search term yields multiple city options
                     if (filteredData.length > 1){
-                        $('#city-options-wrapper').append($('<h3>')
-                            .attr('id', 'city-options-header')
-                            .addClass('text-center')
-                            .text('Which one?'));
-
-                        $('#city-options-wrapper').append($('<div>')
-                            .attr('id', 'city-options-btns-wrapper')
-                            .addClass('row justify-content-center'));
+                        $('#city-options-wrapper').append($(
+                            '<h3 id="city-options-header" class="text-center mb-2">Which one?</h3>' + 
+                            '<div id="city-options-btns-wrapper" class="row justify-content-center"></div>'
+                        ));
 
                         filteredData.forEach(option => 
-                            $('#city-options-btns-wrapper').append($('<button>')
-                                .addClass('city-options-btn')
-                                .attr('lat', option.lat)
-                                .attr('lon', option.lon)
-                                .text(getCityText(option)))
+                            $('#city-options-btns-wrapper').append($(
+                                '<button class="city-options-btn btn btn-info m-2" lat="' + option.lat + '" lon="' + option.lon + '">' +
+                                    getCityText(option) +
+                                '</button>'
+                            ))
                         );
 
-                        $('#city-options-wrapper').append($('<h4>')
-                            .attr('id', 'city-options-footer')
-                            .addClass('text-center')
-                            .text("If none of these options is what you're looking for, try making your search more specific"));
+                        $('#city-options-wrapper').append($(
+                            '<h4 id="city-options-footer" class="text-center mt-2">' + 
+                                "If none of these options is what you're looking for, try making your search more specific" +
+                            '</h4>'
+                        ));
+                            
 
                         $('#city-options-btns-wrapper').on('click', '.city-options-btn', function(){
                             getWeather($(this).attr('lat'), $(this).attr('lon'), $(this).text())
@@ -172,9 +172,12 @@ function cityOptions(searchTerm){
 
                     // If the search terms doesn't yield any results
                     else 
-                        $('#city-options-wrapper').append($('<h4>')
-                            .addClass('error-msg text-center')
-                            .text('No results found'));
+                        $('#city-options-wrapper').append($(
+                            '<h4 class="text-center">' +
+                                'No results found' +
+                            '</h4>'
+                        ));
+                            
                 })
             } else
                 throw '';
@@ -224,8 +227,8 @@ function getCityText(dataEl){
 // Get and display weather data for the given city
 function getWeather(lat, lon, cityText){
     $('#city-options-wrapper').addClass('d-none');
-    $('#weather-now-wrapper').empty().removeClass('d-none');
-    $('#five-day-forecast-wrapper').empty().removeClass('d-none');
+    $('#weather-now-wrapper').empty().removeClass('border').addClass('d-none');
+    $('#five-day-forecast-wrapper').empty().removeClass('border').addClass('d-none');
 
     //Weather API
     fetch('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
@@ -233,43 +236,44 @@ function getWeather(lat, lon, cityText){
             if (response.ok){
                 response.json().then(data => {
                     $('#weather-now-wrapper').append(
-                        '<h4 id="weather-now-header" class="col-12 text-center">' + cityText
-                        + ' <span id="weather-now-date" class="date">(' + DateTime.fromSeconds(data.current.dt).toFormat('ccc, MMM d, y, t') + ')</span>'
-                        + '<img id="weather-now-img"'
-                            + 'style=' + ICON_STYLE
-                            + 'src="' + getWeatherIconLink(data.current.weather[0].icon)
-                        + '"/>'
-                        + '</h4>'
+                        '<h4 id="weather-now-header" class="my-2">' + cityText + '</h4>' +
+                        '<h4 id="weather-now-date" class="mb-0">(' + DateTime.fromSeconds(data.current.dt).toFormat('ccc, MMM d, y, t') + ')</h4>' +
+                        '<img id="weather-now-img" ' +
+                            'style="' + ICON_STYLE + '" ' +
+                            'src="' + getWeatherIconLink(data.current.weather[0].icon) +
+                        '"/>'
                     );
 
                     $('#weather-now-wrapper').append(
-                        '<div id="weather-now-stats-wrapper" class="flex-col text-center">'
-                                + '<p>Temp: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>'
-                                + '<p>Wind: ' + Math.round(data.current.wind_speed) + ' MPH</p>'
-                                + '<p>Humidity: ' + Math.round(data.current.humidity) + '%</p>'
-                                + '<p>UV Index: <span class="uv-index ' + getUVIndexCat(data.current.uvi) + '">' + Math.round(data.current.uvi) + '</span></p>'
-                        + '</div>'
+                        '<div id="weather-now-stats-wrapper" class="flex-column align-items-center">' +
+                            '<p><span class="stat-label">Temp</span>: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>' +
+                            '<p><span class="stat-label">Wind</span>: ' + Math.round(data.current.wind_speed) + ' MPH</p>' +
+                            '<p><span class="stat-label">Humidity</span>: ' + Math.round(data.current.humidity) + '%</p>' +
+                            '<p><span class="stat-label">UV Index</span>: <span class="uv-index ' + getUVIndexCat(data.current.uvi) + '">' + Math.round(data.current.uvi) + '</span></p>' +
+                        '</div>'
                     );
 
                     $('#five-day-forecast-wrapper').append(
-                        '<h4 id="five-day-forecast-header" class="col-12 text-center">5-day forecast</h4>'
-                        + '<div id="forecasts-wrapper" class="row justify-content-around"></div>'
+                        '<h4 id="five-day-forecast-header" class="mt-2 mb-3">5-day forecast</h4>' +
+                        '<div id="forecasts-wrapper" class="w-100 d-flex flex-row justify-content-center flex-wrap mb-1"></div>'
                     );
 
                     for (i = 1; i < 6; i++) {
                         $('#forecasts-wrapper').append(
-                            '<div class="card col-2">'
-                                + '<div class="card-body text-center">'
-                                    + '<div class="card-title">' + DateTime.fromSeconds(data.daily[i].dt).toFormat('ccc, MMM d') + '</div>'
-                                    + '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '">'
-                                    +'</div>'
-                                    + '<p class="card-text">Temp: ' + Math.round(data.daily[i].temp.day) + '°F</p>'
-                                    + '<p class="card-text">Wind: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>'
-                                    + '<p class="card-text">Humidity: ' + Math.round(data.daily[i].humidity) + '%</p>'
-                                + '</div>'
-                            + '</div>'
+                            '<div class="card px-0 mx-2 mb-3" style="width: 150px">' +
+                                '<div class="card-body text-center px-2 py-3">' +
+                                    '<div class="card-title mb-1">' + DateTime.fromSeconds(data.daily[i].dt).toFormat('ccc, MMM d') + '</div>' +
+                                    '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '">' +
+                                    '<p class="card-text text-left pl-2"><span class="stat-label">Temp</span>: ' + Math.round(data.daily[i].temp.day) + '°F</p>' +
+                                    '<p class="card-text text-left pl-2"><span class="stat-label">Wind</span>: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>' +
+                                    '<p class="card-text text-left pl-2"><span class="stat-label">Humidity</span>: ' + Math.round(data.daily[i].humidity) + '%</p>' +
+                                '</div>' +
+                            '</div>'
                         );
                     }
+
+                    $('#weather-now-wrapper').addClass('d-flex flex-column border').removeClass('d-none');
+                    $('#five-day-forecast-wrapper').addClass('d-flex flex-column border').removeClass('d-none');
 
                     saveSearchHistory(lat, lon, cityText);
                 })
@@ -277,7 +281,9 @@ function getWeather(lat, lon, cityText){
                 throw '';
         }).catch(error => {
             $('#weather-now-wrapper').append(SYSTEM_ERROR_EL);
+            $('#weather-now-wrapper').removeClass('d-none border');
         });
+
 }
 
 
@@ -336,9 +342,14 @@ function loadSearchHistory(){
     $('#search-history-wrapper').empty();
     searchHistory.forEach(item => 
         $('#search-history-wrapper').append(
-            '<button class="search-history-btn" lat="' + item.lat + '" lon="' + item.lon + '">' + item.text + '</button>'
+            '<button class="search-history-btn w-100 btn btn-secondary mb-2" lat="' + item.lat + '" lon="' + item.lon + '">' + item.text + '</button>'
         )
     );
+}
+
+// Set current year for footer copyright
+function footerYr(){
+    $('#this-year').text(DateTime.now().toFormat('y'));
 }
 
 
@@ -348,13 +359,13 @@ function loadSearchHistory(){
 // Toggle "US" vs "Int'l"
 $('#us-intl-toggler').change(function(){
     if (US()){ 
-        $('#us-label').css('text-decoration', 'underline 2px');
-        $('#intl-label').css('text-decoration', 'none');
+        $('#us-label').css('border-color', $('#us-label').css('color'));
+        $('#intl-label').css('border-color', 'rgba(0,0,0,0)');
         $('#city-input').attr('placeholder', 'City (ST)')
     }
     else{ //int'l
-        $('#us-label').css('text-decoration', 'none');
-        $('#intl-label').css('text-decoration', 'underline 2px');
+        $('#us-label').css('border-color', 'rgba(0,0,0,0)');
+        $('#intl-label').css('border-color', $('#intl-label').css('color'));
         $('#city-input').attr('placeholder', 'City (Country Code)')
     }
 });
@@ -370,6 +381,8 @@ $('#search-form').submit(function(event){
         searchTerm = formatCountryCode(searchTerm);
         cityOptions(searchTerm);
     }
+
+    $(this).blur();
 });
 
 
@@ -382,3 +395,4 @@ $('#search-history-wrapper').on('click', '.search-history-btn', function(){
 
 //INITIALIZE PAGE
 loadSearchHistory();
+footerYr();
