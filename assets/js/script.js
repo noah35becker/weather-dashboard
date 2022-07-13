@@ -75,6 +75,8 @@ const SYSTEM_ERROR_EL = $('<h4>')
     .addClass('error-msg text-center')
     .text('System error—please try again');
 
+const ICON_STYLE = 'display: inline-block; height: 40px';
+
 
 //FUNCTIONS
 
@@ -230,24 +232,42 @@ function getWeather(lat, lon, cityText){
                     console.log(data);
                     $('#weather-now-wrapper').append(
                         '<h4 id="weather-now-header" class="col-12 text-center">' + cityText
-                        + ' <span id="weather-now-date" class="date">(' + DateTime.fromSeconds(data.current.dt).toFormat('MMMM d, y') + ')</span>'
-                        + '<img\
-                            id="weather-now-img"\
-                            style="display: inline-block; height: 40px"\
-                            src="http://openweathermap.org/img/wn/' + data.current.weather[0].icon + '@2x.png"/>'
+                        + ' <span id="weather-now-date" class="date">(' + DateTime.fromSeconds(data.current.dt).toFormat('ccc, MMM d, y, t') + ')</span>'
+                        + '<img id="weather-now-img"'
+                            + 'style=' + ICON_STYLE
+                            + 'src="' + getWeatherIconLink(data.current.weather[0].icon)
+                        + '"/>'
                         + '</h4>'
                     );
 
                     $('#weather-now-wrapper').append(
-                        '<div id="weather-now-stats" class="flex-col">'
-                            + '<p>Temp: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>'
-                            + '<p>Wind: ' + Math.round(data.current.wind_speed) + ' MPH</p>'
-                            + '<p>Humidity: ' + Math.round(data.current.humidity) + '%</p>'
-                            + '<p>UV Index: <span class="uv-index ' + getUVIndexCat(data.current.uvi) + '">' + Math.round(data.current.uvi) + '</span></p>'
+                        '<div id="weather-now-stats-wrapper" class="flex-col text-center">'
+                                + '<p>Temp: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>'
+                                + '<p>Wind: ' + Math.round(data.current.wind_speed) + ' MPH</p>'
+                                + '<p>Humidity: ' + Math.round(data.current.humidity) + '%</p>'
+                                + '<p>UV Index: <span class="uv-index ' + getUVIndexCat(data.current.uvi) + '">' + Math.round(data.current.uvi) + '</span></p>'
                         + '</div>'
                     );
 
-                    //5-DAY FORECAST
+                    $('#five-day-forecast-wrapper').append(
+                        '<h4 id="five-day-forecast-header" class="col-12 text-center">5-day forecast</h4>'
+                        + '<div id="forecasts-wrapper" class="row justify-content-around"></div>'
+                    );
+
+                    for (i = 1; i < 6; i++) {
+                        $('#forecasts-wrapper').append(
+                            '<div class="card col-2">'
+                                + '<div class="card-body text-center">'
+                                    + '<div class="card-title">' + DateTime.fromSeconds(data.daily[i].dt).toFormat('ccc, MMM d') + '</div>'
+                                    + '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '">'
+                                    +'</div>'
+                                    + '<p>Temp: ' + Math.round(data.daily[i].temp.day) + '°F</p>'
+                                    + '<p>Wind: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>'
+                                    + '<p>Humidity: ' + Math.round(data.daily[i].humidity) + '%</p>'
+                                + '</div>'
+                            + '</div>'
+                        );
+                    }
 
                     //ADD TO SEARCH HISTORY
                 })
@@ -256,6 +276,12 @@ function getWeather(lat, lon, cityText){
         }).catch(error => {
             $('#weather-now-wrapper').append(SYSTEM_ERROR_EL);
         });
+}
+
+
+//Get weather icon img link
+function getWeatherIconLink(iconID){
+    return 'http://openweathermap.org/img/wn/' + iconID + '@2x.png';
 }
 
 
