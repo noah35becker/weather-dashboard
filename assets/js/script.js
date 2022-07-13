@@ -234,9 +234,10 @@ function getWeather(lat, lon, cityText){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
+                    console.log(data);
                     $('#weather-now-wrapper').append(
                         '<h4 id="weather-now-header" class="my-2">' + cityText + '</h4>' +
-                        '<h4 id="weather-now-date" class="mb-0">(' + DateTime.fromSeconds(data.current.dt).toFormat('ccc, MMM d, y, t') + ')</h4>' +
+                        '<h4 id="weather-now-date" class="mb-0">(' + DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t') + ')</h4>' +
                         '<img id="weather-now-img" ' +
                             'style="' + ICON_STYLE + '" ' +
                             'src="' + getWeatherIconLink(data.current.weather[0].icon) +
