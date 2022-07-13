@@ -136,7 +136,6 @@ function cityOptions(searchTerm){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    
                     var filteredData = filterOptionsUSIntl(data, searchTerm.includes(', us'));
 
                     // If the search term yields multiple city options
@@ -260,7 +259,7 @@ function getWeather(lat, lon, cityText){
 
                     for (i = 1; i < 6; i++) {
                         $('#forecasts-wrapper').append(
-                            '<div class="card px-0 mx-2 mb-3" style="width: 150px">' +
+                            '<div class="card px-0 mx-2 mb-3 border border-light" style="width: 150px">' +
                                 '<div class="card-body text-center px-2 py-3">' +
                                     '<div class="card-title mb-1">' + DateTime.fromSeconds(data.daily[i].dt).toFormat('ccc, MMM d') + '</div>' +
                                     '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '">' +
