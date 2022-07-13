@@ -71,6 +71,8 @@ const US_STATES = [
     new State('WY', 'Wyoming'),
 ];
 
+const COUNTRY_CODES = 'af al dz as ad ao ai aq ag ar am aw au at az bs bh bd bb by be bz bj bm bt bo bq ba bw bv br io bn bg bf bi cv kh cm ca ky cf td cl cn cx cc co km cd cg ck cr hr cu cw cy cz ci dk dj dm do ec eg sv gq er ee sz et fk fo fj fi fr gf pf tf ga gm ge de gh gi gr gl gd gp gu gt gg gn gw gy ht hm va hn hk hu is in id ir iq ie im il it jm jp je jo kz ke ki kp kr kw kg la lv lb ls lr ly li lt lu mo mg mw my mv ml mt mh mq mr mu yt mx fm md mc mn me ms ma mz mm na nr np nl nc nz ni ne ng nu nf mp no om pk pw ps pa pg py pe ph pn pl pt pr qa mk ro ru rw re bl sh kn lc mf pm vc ws sm st sa sn rs sc sl sg sx sk si sb so za gs ss es lk sd sr sj se ch sy tw tj tz th tl tg tk to tt tn tr tm tc tv ug ua ae gb um us uy uz vu ve vn vg vi wf eh ye zm zw ax';
+
 const SYSTEM_ERROR_EL = $(
     '<h4 class="error-msg text-center">' +
         'System error—please try again' +
@@ -91,34 +93,26 @@ function US(){
 }
 
 
-// Add a US country code, or format the int'l country code correctly for the API, if necessary
-function formatCountryCode(searchTerm){
-    var searchWords = searchTerm.toLowerCase().split(/[,\s]+/); //splits based on this RegEx (w/ either commas or spaces as delimiters
+// Format the search term for the Geocoding API, with states / country
+function formatSearchTerm(searchTerm){
+    var searchWords = searchTerm.toLowerCase().split(' ');
     var output = '';
     
     if (US()){
-        var stateCodes = '';
-        US_STATES.forEach(state => {
-            stateCodes += state.short.toLowerCase() + ' ';
-        });
-
-        searchWords.forEach(elem => {
-            if(stateCodes.includes(elem)){
-                output += ', ' + elem;
-            }
-            else if (!(elem === 'us'))
-                output += ' ' + elem;
-        });
+        for (i = 0; i < searchWords.length; i++){
+            if (US_STATES.find(state => state.short.toLowerCase() === searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the state code if needed
+                output += ',';
+            output += ' ' + searchWords[i];   
+        }
 
         output += ', us';
     }
     else{ //int'l
-        searchWords.forEach(elem => {
-            if (elem.length === 2)
-                output += ', ' + elem;
-            else
-                output += ' ' + elem;
-        });
+        for (i = 0; i < searchWords.length; i++){
+            if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the country code if needed
+                output += ',';
+            output += ' ' + searchWords[i];
+        }
     }
 
     return output.trim();
@@ -234,7 +228,6 @@ function getWeather(lat, lon, cityText){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    console.log(data);
                     $('#weather-now-wrapper').append(
                         '<h4 id="weather-now-header" class="my-2">' + cityText + '</h4>' +
                         '<h4 id="weather-now-date" class="mb-0">(' + DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t') + ')</h4>' +
@@ -361,12 +354,12 @@ $('#us-intl-toggler').change(function(){
     if (US()){ 
         $('#us-label').css('border-color', $('#us-label').css('color'));
         $('#intl-label').css('border-color', 'rgba(0,0,0,0)');
-        $('#city-input').attr('placeholder', 'City (ST)')
+        $('#city-input').attr('placeholder', 'City, ST')
     }
     else{ //int'l
         $('#us-label').css('border-color', 'rgba(0,0,0,0)');
         $('#intl-label').css('border-color', $('#intl-label').css('color'));
-        $('#city-input').attr('placeholder', 'City (Country Code)')
+        $('#city-input').attr('placeholder', 'City, Province, Country Code')
     }
 });
 
@@ -378,7 +371,7 @@ $('#search-form').submit(function(event){
     var searchTerm = $('#city-input').val().trim();
     
     if(searchTerm){
-        searchTerm = formatCountryCode(searchTerm);
+        searchTerm = formatSearchTerm(searchTerm);
         cityOptions(searchTerm);
     }
 
