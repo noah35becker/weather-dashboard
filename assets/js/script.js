@@ -93,7 +93,7 @@ function US(){
 }
 
 
-// Format the search term for the Geocoding API, with states / country
+// Format the search term for the Geocoding API
 function formatSearchTerm(searchTerm){
     var searchWords = searchTerm.toLowerCase().split(' ');
     var output = '';
@@ -112,7 +112,7 @@ function formatSearchTerm(searchTerm){
     }
     else{ //int'l
         for (i = 0; i < searchWords.length; i++){
-            if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the country code if needed
+            if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i >= 1 ? i-1 : 0].includes(',')) // add a comma before the country code if needed
                 output += ',';
             output += ' ' + searchWords[i];
         }
@@ -202,7 +202,7 @@ function filterOptionsUSIntl(options, usCountryCodeSupplied){
 }
 
 
-// Get full text for City(, State / ST)(, Country)
+// Get full text for City(, ST / State)(, Country)
 function getCityText(dataEl){
     var output = [dataEl.name];
 
@@ -320,7 +320,6 @@ function saveSearchHistory(newItemLat, newItemLon, newItemText){
         if (newItemText === searchHistory[i].text){
             trulyNewItem = false;
             searchHistory.unshift(searchHistory.splice(i, 1)[0]);
-            localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
             break;
         }
     
@@ -333,10 +332,9 @@ function saveSearchHistory(newItemLat, newItemLon, newItemText){
         
         if (searchHistory.length > MAX_NUM_SEARCH_HISTORY)
             searchHistory.pop();
-
-        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
     }
 
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
     loadSearchHistory();
 }
 
@@ -350,6 +348,7 @@ function loadSearchHistory(){
         )
     );
 }
+
 
 // Set current year for footer copyright
 function footerYr(){
