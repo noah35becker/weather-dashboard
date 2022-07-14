@@ -118,7 +118,6 @@ function formatSearchTerm(searchTerm){
         }
     }
 
-    console.log(output.trim());
     return output.trim();
 }
 
@@ -232,7 +231,6 @@ function getWeather(lat, lon, cityText){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    console.log(data);
                     $('#weather-now-wrapper').append(
                         '<h4 id="weather-now-header" class="text-center my-2">' + cityText + '</h4>' +
                         '<h5 id="weather-now-date" class="px-3 text-center mb-0">(' + DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t') + ')</h5>' +
