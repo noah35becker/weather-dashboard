@@ -126,7 +126,7 @@ function formatSearchTerm(searchTerm){
 function cityOptions(searchTerm){
     $('#city-options-wrapper').empty().removeClass('d-none');
     $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
-    $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none'); 
+    $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none');
     
     // Geocoding API
     fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
@@ -277,8 +277,9 @@ function getWeather(lat, lon, cityText){
             } else
                 throw '';
         }).catch(error => {
-            $('#weather-now-wrapper').append(SYSTEM_ERROR_EL);
-            $('#weather-now-wrapper').removeClass('d-none border');
+            $('#city-options-wrapper').append(SYSTEM_ERROR_EL).removeClass('d-none');
+            $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
+            $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none'); 
         });
 
 }
