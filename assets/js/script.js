@@ -129,7 +129,7 @@ function cityOptions(searchTerm){
     $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none');
     
     // Geocoding API
-    fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
+    fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
@@ -180,6 +180,7 @@ function cityOptions(searchTerm){
 
         // If the geocoding API fails
         }).catch(error => {
+            console.log('http://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY);
             $('#city-options-wrapper').append(SYSTEM_ERROR_EL);
         });
 };
@@ -227,7 +228,7 @@ function getWeather(lat, lon, cityText){
     $('#five-day-forecast-wrapper').empty().removeClass('border d-flex').addClass('d-none');
 
     //Weather API
-    fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
+    fetch('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
@@ -277,6 +278,7 @@ function getWeather(lat, lon, cityText){
             } else
                 throw '';
         }).catch(error => {
+            console.log('http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY);
             $('#city-options-wrapper').append(SYSTEM_ERROR_EL).removeClass('d-none');
             $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
             $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none'); 
@@ -287,7 +289,8 @@ function getWeather(lat, lon, cityText){
 
 //Get weather icon img link
 function getWeatherIconLink(iconID){
-    return 'https://openweathermap.org/img/wn/' + iconID + '@2x.png';
+    console.log('http://openweathermap.org/img/wn/' + iconID + '@2x.png');
+    return 'http://openweathermap.org/img/wn/' + iconID + '@2x.png';
 }
 
 
