@@ -96,12 +96,12 @@ function US(){
 // Format the search term for the Geocoding API
 function formatSearchTerm(searchTerm){
     var searchWords = searchTerm.toLowerCase().split(' ');
-    var output = '';
+    var output = searchWords[0];
     
     if (US()){
-        for (i = 0; i < searchWords.length; i++){
-            if ( // add a comma before the state code (or state full name) if needed
-                !searchWords[i >= 1 ? i-1 : 0].includes(',') &&
+        for (i = 1; i < searchWords.length; i++){ // beginning w/ the second word, at index 1
+            if ( // add a comma before the state code (or state full name) if needed (won't add a comma before the first word, e.g. "washington heights")
+                !searchWords[i-1].includes(',') &&
                 US_STATES.find(state => (state.short.toLowerCase() === searchWords[i] || state.full.toLowerCase() === searchWords[i]))
             )
                 output += ',';
@@ -111,14 +111,14 @@ function formatSearchTerm(searchTerm){
         output += ', us';
     }
     else{ //int'l
-        for (i = 0; i < searchWords.length; i++){
-            if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i >= 1 ? i-1 : 0].includes(',')) // add a comma before the country code if needed
+        for (i = 1; i < searchWords.length; i++){
+            if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the country code if needed
                 output += ',';
             output += ' ' + searchWords[i];
         }
     }
 
-    return output.trim();
+    return output;
 }
 
 
