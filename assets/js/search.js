@@ -9,7 +9,7 @@ import {saveSearchHistory} from './search-history.js';
 
 
 //True if US, false if int'l
-function US(){
+export function US(){
     return !(document.querySelector('#us-intl-toggler').checked);
 }
 
@@ -45,12 +45,14 @@ export function formatSearchTerm(searchTerm){
 
 // Handle if multiple possible cities match the search term
 export function cityOptions(searchTerm){
+    const disclaimerMsg = "If none of these options is what you're looking for, try making your search more specific";
+
     $('#city-options-wrapper').empty().removeClass('d-none');
     $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
     $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none');
     
     // Geocoding API
-    fetch('https://api.openweathermap.org/geo/1.0/direct?q=' + searchTerm + '&limit=5&appid=' + API_KEY)
+    fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${API_KEY}`)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
@@ -58,24 +60,20 @@ export function cityOptions(searchTerm){
 
                     // If the search term yields multiple city options
                     if (filteredData.length > 1){
-                        $('#city-options-wrapper').append($(
-                            '<h3 id="city-options-header" class="text-center mb-2">Which one?</h3>' + 
-                            '<div id="city-options-btns-wrapper" class="row justify-content-center"></div>'
-                        ));
+                        $('#city-options-wrapper').append($(`
+                            <h3 id="city-options-header" class="text-center mb-2">Which one?</h3>
+                            <div id="city-options-btns-wrapper" class="row justify-content-center"></div>
+                        `));
 
                         filteredData.forEach(option => 
-                            $('#city-options-btns-wrapper').append($(
-                                '<button class="city-options-btn btn btn-info m-2" lat="' + option.lat + '" lon="' + option.lon + '">' +
-                                    getCityText(option) +
-                                '</button>'
-                            ))
+                            $('#city-options-btns-wrapper').append($(`
+                                <button class="city-options-btn btn btn-info m-2" lat=${option.lat} lon=${option.lon}>${getCityText(option)}</button>
+                            `))
                         );
 
-                        $('#city-options-wrapper').append($(
-                            '<h4 id="city-options-footer" class="text-center mt-2">' + 
-                                "If none of these options is what you're looking for, try making your search more specific" +
-                            '</h4>'
-                        ));
+                        $('#city-options-wrapper').append($(`
+                            <h4 id="city-options-footer" class="text-center mt-2">${disclaimerMsg}</h4>
+                        `));
                             
 
                         $('#city-options-btns-wrapper').on('click', '.city-options-btn', function(){
@@ -89,11 +87,9 @@ export function cityOptions(searchTerm){
 
                     // If the search terms doesn't yield any results
                     else 
-                        $('#city-options-wrapper').append($(
-                            '<h4 class="text-center">' +
-                                'No results found' +
-                            '</h4>'
-                        ));
+                        $('#city-options-wrapper').append($(`
+                            <h4 class="text-center">No results found</h4>
+                        `));
                             
                 })
             } else
@@ -136,7 +132,7 @@ function getCityText(dataEl){
 
     if (!US()) //add country code for int'l only
         output.push(dataEl.country);
-    
+
     return output.join(', ');
 }
 
@@ -148,46 +144,50 @@ export function getWeather(lat, lon, cityText){
     $('#five-day-forecast-wrapper').empty().removeClass('border d-flex').addClass('d-none');
 
     //Weather API
-    fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appID=' + API_KEY)
+    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly,alerts&appID=${API_KEY}`)
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    $('#weather-now-wrapper').append(
-                        '<h4 id="weather-now-header" class="text-center my-2">' + cityText + '</h4>' +
-                        '<h5 id="weather-now-date" class="px-3 text-center mb-0">(' + DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t') + ')</h5>' +
-                        '<img ' +
-                            'style="' + ICON_STYLE + '" ' +
-                            'src="' + getWeatherIconLink(data.current.weather[0].icon) + '" ' +
-                            'alt="' + data.current.weather[0].description + '" ' +
-                        '/>'
-                    );
+                    $('#weather-now-wrapper').append(`
+                        <h4 id="weather-now-header" class="text-center my-2">${cityText}</h4>
+                        <h5 id="weather-now-date" class="px-3 text-center mb-0">(${DateTime.fromSeconds(data.current.dt).setZone(data.timezone).toFormat('ccc, MMM d, y, t')})</h5>
+                        <img
+                            style="${ICON_STYLE}"
+                            src=${getWeatherIconLink(data.current.weather[0].icon)}
+                            alt=${data.current.weather[0].description}
+                        />
+                    `);
 
-                    $('#weather-now-wrapper').append(
-                        '<div id="weather-now-stats-wrapper" class="px-3 flex-column align-items-center">' +
-                            '<p><span class="stat-label">Temp</span>: ' + Math.round(data.current.temp) + '°F (feels like ' + Math.round(data.current.feels_like) + '°)</p>' +
-                            '<p><span class="stat-label">Wind</span>: ' + Math.round(data.current.wind_speed) + ' MPH</p>' +
-                            '<p><span class="stat-label">Humidity</span>: ' + Math.round(data.current.humidity) + '%</p>' +
-                            '<p><span class="stat-label">UV Index</span>: ' + getUVIndexHTML(data.current.uvi) + '</p>' +
-                        '</div>'
-                    );
+                    $('#weather-now-wrapper').append(`
+                        <div id="weather-now-stats-wrapper" class="px-3 flex-column align-items-center">
+                            <p><span class="stat-label">Temp</span>: ${Math.round(data.current.temp)}°F (feels like ${Math.round(data.current.feels_like)}°)</p>
+                            <p><span class="stat-label">Wind</span>: ${Math.round(data.current.wind_speed)} MPH</p>
+                            <p><span class="stat-label">Humidity</span>: ${Math.round(data.current.humidity)}%</p>
+                            <p><span class="stat-label">UV Index</span>: ${getUVIndexHTML(data.current.uvi)}</p>
+                        </div>
+                    `);
 
-                    $('#five-day-forecast-wrapper').append(
-                        '<h4 id="five-day-forecast-header" class="mt-2 mb-3">5-day forecast</h4>' +
-                        '<div id="forecasts-wrapper" class="w-100 d-flex flex-row justify-content-center flex-wrap mb-1"></div>'
-                    );
+                    $('#five-day-forecast-wrapper').append(`
+                        <h4 id="five-day-forecast-header" class="mt-2 mb-3">5-day forecast</h4>
+                        <div id="forecasts-wrapper" class="w-100 d-flex flex-row justify-content-center flex-wrap mb-1"></div>
+                    `);
 
                     for (let i = 1; i < 6; i++) {
-                        $('#forecasts-wrapper').append(
-                            '<div class="card px-0 mx-2 mb-3 border border-light" style="width: 150px">' +
-                                '<div class="card-body text-center px-2 py-3">' +
-                                    '<div class="card-title mb-1">' + DateTime.fromSeconds(data.daily[i].dt).setZone(data.timezone).toFormat('ccc, MMM d') + '</div>' +
-                                    '<img class="card-subtitle" style="' + ICON_STYLE + '" src="' + getWeatherIconLink(data.daily[i].weather[0].icon) + '" alt="' + data.daily[i].weather[0].description + '"/>' +
-                                    '<p class="card-text text-left pl-2"><span class="stat-label">Temp</span>: ' + Math.round(data.daily[i].temp.day) + '°F</p>' +
-                                    '<p class="card-text text-left pl-2"><span class="stat-label">Wind</span>: ' + Math.round(data.daily[i].wind_speed) + ' MPH</p>' +
-                                    '<p class="card-text text-left pl-2"><span class="stat-label">Humidity</span>: ' + Math.round(data.daily[i].humidity) + '%</p>' +
-                                '</div>' +
-                            '</div>'
-                        );
+                        $('#forecasts-wrapper').append(`
+                            <div class="card px-0 mx-2 mb-3 border border-light" style="width: 150px">
+                                <div class="card-body text-center px-2 py-3">
+                                    <div class="card-title mb-1">${DateTime.fromSeconds(data.daily[i].dt).setZone(data.timezone).toFormat('ccc, MMM d')}</div>
+                                    <img class="card-subtitle"
+                                        style="${ICON_STYLE}"
+                                        src=${getWeatherIconLink(data.daily[i].weather[0].icon)}
+                                        alt=${data.daily[i].weather[0].description}
+                                    />
+                                    <p class="card-text text-left pl-2"><span class="stat-label">Temp</span>: ${Math.round(data.daily[i].temp.day)}°F</p>
+                                    <p class="card-text text-left pl-2"><span class="stat-label">Wind</span>: ${Math.round(data.daily[i].wind_speed)} MPH</p>
+                                    <p class="card-text text-left pl-2"><span class="stat-label">Humidity</span>: ${Math.round(data.daily[i].humidity)}%</p>
+                                </div>
+                            </div>
+                        `);
                     }
 
                     $('#weather-now-wrapper').addClass('d-flex flex-column border').removeClass('d-none');

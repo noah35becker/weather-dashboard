@@ -34,8 +34,12 @@ export function saveSearchHistory(newItemLat, newItemLon, newItemText){
 export function loadSearchHistory(){
     $('#search-history-wrapper').empty();
     searchHistory.forEach(item => 
-        $('#search-history-wrapper').append(
-            '<button class="search-history-btn w-100 btn btn-secondary mb-2" lat="' + item.lat + '" lon="' + item.lon + '">' + item.text + '</button>'
-        )
+        $('#search-history-wrapper').append(`
+            <button
+                class="search-history-btn w-100 btn btn-secondary mb-2"
+                lat=${item.lat}
+                lon=${item.lon}
+            >${item.text.trim()}</button>
+        `)
     );
 }

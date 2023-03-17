@@ -1,6 +1,6 @@
 
 // IMPORTS
-import {formatSearchTerm, cityOptions, getWeather} from './search.js';
+import {US, formatSearchTerm, cityOptions, getWeather} from './search.js';
 
 
 
