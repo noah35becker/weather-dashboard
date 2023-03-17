@@ -5,22 +5,18 @@ const searchHistory = JSON.parse(localStorage.getItem(localStorageName)) || [];
 
 
 //Save search history to localStorage
-export function saveSearchHistory(newItemLat, newItemLon, newItemText){
-    var trulyNewItem = true;
+export function saveSearchHistory(city){
+    let trulyNewItem = true;
     
     for (let i = 0; i < searchHistory.length; i++)
-        if (newItemText === searchHistory[i].text){
+        if (city.text === searchHistory[i].text){
             trulyNewItem = false;
             searchHistory.unshift(searchHistory.splice(i, 1)[0]);
             break;
         }
     
     if (trulyNewItem){
-        searchHistory.unshift({
-            lat: newItemLat,
-            lon: newItemLon,
-            text: newItemText
-        });
+        searchHistory.unshift(city);
         
         if (searchHistory.length > MAX_NUM_SEARCH_HISTORY)
             searchHistory.pop();

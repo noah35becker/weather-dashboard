@@ -193,7 +193,11 @@ export function getWeather(lat, lon, cityText){
                     $('#weather-now-wrapper').addClass('d-flex flex-column border').removeClass('d-none');
                     $('#five-day-forecast-wrapper').addClass('d-flex flex-column border').removeClass('d-none');
 
-                    saveSearchHistory(lat, lon, cityText);
+                    saveSearchHistory({
+                        lat,
+                        lon,
+                        text: cityText
+                    });
                 })
             } else
                 throw '';
