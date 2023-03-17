@@ -3,18 +3,16 @@
 export default function getUVIndexHTML(uvIndex){
     uvIndex = Math.round(uvIndex);
     
-    let output = '<span class="uv-index uv-';
+    const uvLvl =
+        uvIndex <= 2 ?
+            'low'
+        : uvIndex <= 5 ?
+            'moderate'
+        : uvIndex <= 7 ?
+            'high'
+        :
+            'very-high'
+    ;
 
-    if (uvIndex <= 2)
-        output += 'low';
-    else if (uvIndex <= 5)
-        output += 'moderate';
-    else if (uvIndex <= 7)
-        output += 'high';
-    else
-        output += 'very-high';
-
-    output += '">' + uvIndex + '</span>';
-
-    return output;
+    return `<span class="uv-index uv-${uvLvl}">${uvIndex}</span>`;
 }
