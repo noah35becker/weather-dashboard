@@ -1,6 +1,7 @@
 
 const MAX_NUM_SEARCH_HISTORY = 8;
-const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+const localStorageName = 'weatherDashboardSearchHistory';
+const searchHistory = JSON.parse(localStorage.getItem(localStorageName)) || [];
 
 
 //Save search history to localStorage
@@ -25,7 +26,7 @@ export function saveSearchHistory(newItemLat, newItemLon, newItemText){
             searchHistory.pop();
     }
 
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    localStorage.setItem(localStorageName, JSON.stringify(searchHistory));
     loadSearchHistory();
 }
 
