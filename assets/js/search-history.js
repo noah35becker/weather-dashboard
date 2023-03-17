@@ -30,6 +30,7 @@ export function saveSearchHistory(city){
 // Load search history on page
 export function loadSearchHistory(){
     $('#search-history-wrapper').empty();
+    
     searchHistory.forEach(item => 
         $('#search-history-wrapper').append(`
             <button

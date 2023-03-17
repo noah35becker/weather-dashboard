@@ -1,5 +1,5 @@
 
-//Get UV Index element (w/ appropriate categorization)
+//Get UV Index element, w/ appropriate categorization
 export default function getUVIndexHTML(uvIndex){
     uvIndex = Math.round(uvIndex);
     

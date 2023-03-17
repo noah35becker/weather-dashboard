@@ -23,21 +23,24 @@ export function formatSearchTerm(searchTerm){
         for (let i = 1; i < searchWords.length; i++){ // beginning w/ the second word
             if ( // add a comma before the state code (or state full name) if needed (won't add a comma before the first word, e.g. "washington heights")
                 !searchWords[i-1].includes(',') &&
-                US_STATES.find(state => (state.short.toLowerCase() === searchWords[i] || state.full.toLowerCase() === searchWords[i]))
+                US_STATES.find(state => (
+                        state.short.toLowerCase() === searchWords[i]
+                    ||
+                        state.full.toLowerCase() === searchWords[i]
+                ))
             )
                 output += ',';
             output += ` ${searchWords[i]}`;   
         }
 
         output += ', us';
-    }
-    else{ //int'l
+    } else //int'l
         for (let i = 1; i < searchWords.length; i++){
             if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the country code if needed
                 output += ',';
             output += ` ${searchWords[i]}`;   
         }
-    }
+    
 
     return output;
 }
@@ -45,8 +48,6 @@ export function formatSearchTerm(searchTerm){
 
 // Handle if multiple possible cities match the search term
 export function cityOptions(searchTerm){
-    const disclaimerMsg = "If none of these options is what you're looking for, try making your search more specific";
-
     $('#city-options-wrapper').empty().removeClass('d-none');
     $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
     $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none');
@@ -67,36 +68,35 @@ export function cityOptions(searchTerm){
 
                         filteredData.forEach(option => 
                             $('#city-options-btns-wrapper').append($(`
-                                <button class="city-options-btn btn btn-info m-2" lat=${option.lat} lon=${option.lon}>${getCityText(option)}</button>
+                                <button
+                                    class="city-options-btn btn btn-info m-2"
+                                    lat=${option.lat}
+                                    lon=${option.lon}
+                                >${getCityText(option)}</button>
                             `))
                         );
 
                         $('#city-options-wrapper').append($(`
-                            <h4 id="city-options-footer" class="text-center mt-2">${disclaimerMsg}</h4>
+                            <h4 id="city-options-footer" class="text-center mt-2">If none of these options is what you're looking for, try making your search more specific</h4>
                         `));
                             
 
                         $('#city-options-btns-wrapper').on('click', '.city-options-btn', function(){
                             getWeather($(this).attr('lat'), $(this).attr('lon'), $(this).text())
                         });
-                    }
-                    
-                    // If the search term yields only one city option
-                    else if (filteredData.length === 1)
+                    } else if (filteredData.length === 1) // If the search term yields only one city option
                         getWeather(filteredData[0].lat, filteredData[0].lon, getCityText(filteredData[0]));
-
-                    // If the search terms doesn't yield any results
-                    else 
+                    else // If the search terms doesn't yield any results
                         $('#city-options-wrapper').append($(`
                             <h4 class="text-center">No results found</h4>
                         `));
                             
                 })
             } else
-                throw '';
+                throw new Error();
 
         // If the geocoding API fails
-        }).catch(error => {
+        }).catch(() => {
             $('#city-options-wrapper').append(SYSTEM_ERROR_EL);
         });
 };
@@ -200,8 +200,8 @@ export function getWeather(lat, lon, cityText){
                     });
                 })
             } else
-                throw '';
-        }).catch(error => {
+                throw new Error();
+        }).catch(() => {
             $('#city-options-wrapper').append(SYSTEM_ERROR_EL).removeClass('d-none');
             $('#weather-now-wrapper').removeClass('d-flex').addClass('d-none');
             $('#five-day-forecast-wrapper').removeClass('d-flex').addClass('d-none'); 
