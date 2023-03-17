@@ -9,9 +9,7 @@ export const API_KEY = '0c3d388a798cab0ea9f81255aec739e8';
 
 // System error jQuery element
 export const SYSTEM_ERROR_EL = $(`
-    <h4 class="error-msg text-center">
-        System error—please try again
-    </h4>
+    <h4 class="error-msg text-center">System error—please try again</h4>
 `);
 
 
