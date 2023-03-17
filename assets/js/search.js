@@ -16,8 +16,8 @@ export function US(){
 
 // Format the search term for the Geocoding API
 export function formatSearchTerm(searchTerm){
-    var searchWords = searchTerm.toLowerCase().split(' ');
-    var output = searchWords[0];
+    const searchWords = searchTerm.toLowerCase().split(' ');
+    let output = searchWords[0];
     
     if (US()){
         for (let i = 1; i < searchWords.length; i++){ // beginning w/ the second word
@@ -26,7 +26,7 @@ export function formatSearchTerm(searchTerm){
                 US_STATES.find(state => (state.short.toLowerCase() === searchWords[i] || state.full.toLowerCase() === searchWords[i]))
             )
                 output += ',';
-            output += ' ' + searchWords[i];   
+            output += ` ${searchWords[i]}`;   
         }
 
         output += ', us';
@@ -35,7 +35,7 @@ export function formatSearchTerm(searchTerm){
         for (let i = 1; i < searchWords.length; i++){
             if (COUNTRY_CODES.includes(searchWords[i]) && !searchWords[i-1].includes(',')) // add a comma before the country code if needed
                 output += ',';
-            output += ' ' + searchWords[i];
+            output += ` ${searchWords[i]}`;   
         }
     }
 
@@ -56,7 +56,7 @@ export function cityOptions(searchTerm){
         .then(response => {
             if (response.ok){
                 response.json().then(data => {
-                    var filteredData = filterOptionsUSIntl(data, searchTerm.includes(', us'));
+                    const filteredData = filterOptionsUSIntl(data, searchTerm.includes(', us'));
 
                     // If the search term yields multiple city options
                     if (filteredData.length > 1){
@@ -121,7 +121,7 @@ function filterOptionsUSIntl(options, usCountryCodeSupplied){
 
 // Get full text for City(, ST / State)(, Country)
 function getCityText(dataEl){
-    var output = [dataEl.name];
+    const output = [dataEl.name];
 
     if (dataEl.state){
         if (US())

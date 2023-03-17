@@ -23,12 +23,10 @@ $('#us-intl-toggler').change(function(){
 $('#search-form').submit(function(event){
     event.preventDefault();
 
-    var searchTerm = $('#city-input').val().trim();
+    const searchTerm = $('#city-input').val().trim();
     
-    if(searchTerm){
-        searchTerm = formatSearchTerm(searchTerm);
-        cityOptions(searchTerm);
-    }
+    if(searchTerm)
+        cityOptions(formatSearchTerm(searchTerm));
 
     $(this).blur();
 });
