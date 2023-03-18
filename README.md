@@ -1,90 +1,76 @@
 # Weather Dashboard
-## Noah Becker
+[![License: GNU LGPLv3](https://img.shields.io/badge/License-GNU%20LGPLv3-informational.svg)](https://choosealicense.com/licenses/lgpl-3.0)
 
-#### [Github repo](https://github.com/noah35becker/weather-dashboard/)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
+    
 
-#### [Live web application](https://noah35becker.github.io/weather-dashboard/)
-<br/>
-************************************************************************
+## Repo
+[https://github.com/noah35becker/weather-dashboard](https://github.com/noah35becker/weather-dashboard)
 
-<br/>
-<br/>
-
-This code completes the weekly challenge for Module #6 in Columbia's Coding Bootcamp.
+## Live application
+[https://noah35becker.github.io/weather-dashboard/](https://noah35becker.github.io/weather-dashboard/)
 
 
-<br/>
+## Description
+This application provides current and 5-day-forecast weather information for different US and international cities.
 
-I have created a weather dashboard. A user can view current and upcoming weather in different US and international cities.
-<br/>
+<i><b>
+## Table of contents
+- [Credits](#credits)
+- [License](#license)
+- [Features](#features)
+- [Contributing](#contributing)
+- [Questions](#questions)
+- [Screenshots](#screenshots)
 
-### Searching for a city
-- The user may select either US or International using the toggle switch, which animates upon toggle
-- The user enters a search term
-    - The search input field's placeholder suggests a search syntax to the user, depending on whether they've selected US or Int'l
-    - Regardless of whether or not the user's search conforms to the suggested syntax, their input is validated
-        - <i>Due to complications with the [Geocoding API](#geocoding-api), user input may fail when a comma is omitted between the city and province for int'l searches</i>
-- The user clicks the search button or presses the Return key to proceed
-
-
-### The search process continues
-- If the user did not enter a search term, nothing happens
-- If the user's search term returns multiple matching options, a button for each option appears (5 maximum), and the user selects one to continue
-    - A note is included: "If none of these options is what you're looking for, try making your search more specific"
-    - <i>Due to complications with the [Geocoding API](#geocoding-api), sometimes multiple</i> duplicate <i> (or essentially duplicate) options are returned. (For example, "Paris" returns three options all titled "Paris, Ile-de-France, FR"; "London" returns both "London, England, GB" and "City of London, England, GB".)</i>
-- If the user's search term returns only one option, the application automatically continues
-- If the user's search term returns no options, a "No results found" message appears
-- If a system error occurs (e.g. a failure in the [Geocoding API](#geocoding-api) fetch), a "System error—please try again" message appears
+</i></b>
 
 
-### How's the weather?
-Once a single city has successfully been selected, the following data appear:
-- City name, plus:
-    - State name, for US searches
-    - Province name, if applicable, for int'l searches
-    - 2-character country code, for int'l searches
-- Local date and time
-- An icon symbolizing current weather conditions
-- Current weather statistics:
-    - Temperature (actual and "feels like"), in °F
-    - Wind speed, in MPH
-    - Humidity %
-    - UV Index, color-coded based on whether its level is low, moderate, high, or very high
-- A 5-day forecast for each of the next 5 days, including:
-    - The date of the given day
-    - Weather conditions icon
-    - Temp
-    - Wind speed
-    - Humidity %
-- If a system error occurs (e.g. a failure in the [Weather API](#weather-api) fetch), a "System error—please try again" message appears
 
 
-### The rest is history
-User search history (on the given browser/device) appears below the search area, automatically updating after each successful search.
-- The user's 8 most recently searched cities are visible, sorted from most- to least-recent
-- Clicking on a given city in the search history displays that city's current weather and 5-day forecast again
-- If a search occurs for a city that is <i>already</i> in the search history (whether by clicking on the city in the search history list, or conducting a new search for that same city), that city is bumped to the top of the search history list, and the others slide down accordingly
-- Search history does not appear on screens narrower than 768px
-<br/>
-<br/>
+## Credits
 
-All geocoding is handled via the <b><a href="https://openweathermap.org/api/geocoding-api" name="geocoding-api">OpenWeather Geocoding API</a></b>, and weather functionality via the <b><a href="https://openweathermap.org/api/one-call-api" name="weather-api">OpenWeather One Call API</a></b>.
-<br/>
+### Creator
+- Noah Becker ([GitHub](https://github.com/noah35becker))
 
-All time functionality is handled via the <b>[Luxon API](https://moment.github.io/luxon/#/)</b>.
 
-<br/>
+### Third-party assets
+- [OpenWeather Geocoding API](https://openweathermap.org/api/geocoding-api)
+- [OpenWeather One Call API](https://openweathermap.org/api/one-call-api) (provides weather data)
+- [Luxon](https://moment.github.io/luxon/#/)
 
-This application uses a responsive layout that adapts to different viewports and devices, coded via Bootstrap and CSS media queries.
 
-<br/>
-************************************************************************
-<br/>
-<br/>
 
-Below are screenshots of different states and features of the web application:
 
-<br/>
+## License
+
+[![License: GNU LGPLv3](https://img.shields.io/badge/License-GNU%20LGPLv3-informational.svg)](https://choosealicense.com/licenses/lgpl-3.0)
+
+Learn more about this license [here](https://choosealicense.com/licenses/lgpl-3.0).
+
+
+
+## Features
+- Toggle switch for US vs. int'l cities
+- Search history (saved in browser's `localStorage`)
+- Weather condition icons
+- Color-coded UV Index
+
+
+## Contributing
+Feel free to fork this project's [repo](https://github.com/noah35becker/weather-dashboard), contribute code, and submit pull requests [here](https://github.com/noah35becker/weather-dashboard/pulls)!
+
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
+
+Contributors to this project must follow all guidelines set forth by the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
+
+
+## Questions
+My GitHub username is [noah35becker](https://github.com/noah35becker).
+
+If you have any questions, I'd be glad to hear from you—contact me at [noahbeckercoding@gmail.com](mailto:noahbeckercoding@gmail.com).
+
+## Screenshots
 The initial state (with the 8 most recently searched cities visible in the search history)
 <br/>
 <br/>
@@ -125,10 +111,3 @@ Color-coding for different UV index categories (low, moderate, high, very high)
 <br/>
 <img src="assets/final-screenshots/uv-index-color-coding.png" width="200"/>
 <br/>
-
-
-
-
-<br/>
-
-– Noah
